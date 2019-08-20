@@ -1,5 +1,6 @@
 package com.example.constraintlayout;
 
+import android.animation.ObjectAnimator;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
@@ -24,7 +25,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
-        addAnimationOperations(); //for activity_main3 layout in setContentView() method
+        //addAnimationOperations(); //for activity_main3 layout in setContentView() method
+
+        //clickAnimation();..for activity_main2
+    }
+
+    private void clickAnimation() {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(findViewById(R.id.button3), "translationX", 0, 25, 0);
+        animator.setInterpolator(new OvershootInterpolator());
+        animator.setStartDelay(500);
+        animator.setDuration(1500);
+        animator.start();
     }
 
     private void addAnimationOperations() {
