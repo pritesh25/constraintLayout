@@ -1,6 +1,5 @@
 package com.example.constraintlayout;
 
-import android.animation.ObjectAnimator;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
@@ -8,9 +7,11 @@ import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
@@ -23,19 +24,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        setContentView(R.layout.activity_main2);
 
         //addAnimationOperations(); //for activity_main3 layout in setContentView() method
 
-        //clickAnimation();..for activity_main2
+        clickAnimation();//for activity_main2
     }
 
     private void clickAnimation() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(findViewById(R.id.button3), "translationX", 0, 25, 0);
+        /*ObjectAnimator animator = ObjectAnimator.ofFloat(findViewById(R.id.button3), "translationX", 0, 25, 0);
         animator.setInterpolator(new OvershootInterpolator());
         animator.setStartDelay(500);
         animator.setDuration(1500);
-        animator.start();
+        animator.start();*/
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Transition changeBound = new ChangeBounds();
+            changeBound.setInterpolator(new AnticipateInterpolator(1.0f));
+            TransitionManager.beginDelayedTransition((LinearLayoutCompat) findViewById(R.id.testLayout), changeBound);
+        }
+
     }
 
     private void addAnimationOperations() {
@@ -54,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
                     Transition changeBound = new ChangeBounds();
-                    changeBound.setInterpolator(new OvershootInterpolator());
+                    changeBound.setInterpolator(new DecelerateInterpolator());
 
                     TransitionManager.beginDelayedTransition(root, changeBound);
 
